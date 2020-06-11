@@ -19,27 +19,30 @@ var Loader = function (_React$Component) {
     }
 
     _createClass(Loader, [{
-        key: 'handleClick',
+        key: "handleClick",
         value: function handleClick() {
 
-            fetch("http://157.245.170.229/Countries").then(function (response) {
-                return JSON.stringify(response);
-            }).then(function (data) {
-                return localStorage.setItem('Country', data);
+            // fetch("http://157.245.170.229/Countries")
+            // .then(response => JSON.stringify(response))
+            // .then(data => localStorage.setItem('Country', data));
+            $.get("http://157.245.170.229/Countries/", function (response) {
+
+                var obj = JSON.parse(response);
+                obj.forEach(function (element) {
+                    var test1 = JSON.stringify(element);
+                    localStorage.setItem("Country", test1);
+                });
             });
-            // country = $.get("157.245.170.229/Countries", (response) =>{
-            //     console.log(response);
-            // });
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
             return React.createElement(
-                'button',
+                "button",
                 {
                     onClick: this.handleClick
                 },
-                'Store Data'
+                "Store Data"
             );
         }
     }]);
