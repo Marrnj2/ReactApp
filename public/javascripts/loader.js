@@ -28,9 +28,10 @@ var Loader = function (_React$Component) {
             $.get("http://157.245.170.229/Countries/", function (response) {
 
                 var obj = JSON.parse(response);
+                console.log(obj);
                 obj.forEach(function (element) {
                     var test1 = JSON.stringify(element);
-                    localStorage.setItem("Country", test1);
+                    localStorage.setItem(element.name, test1);
                 });
             });
         }

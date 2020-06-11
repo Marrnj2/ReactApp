@@ -12,9 +12,10 @@ class Loader extends React.Component {
         $.get("http://157.245.170.229/Countries/", (response) => {
 
             let obj = JSON.parse(response);
+            console.log(obj);
             obj.forEach(element => {
                 let test1 = JSON.stringify(element)
-                localStorage.setItem("Country", test1);
+                localStorage.setItem(element.name, test1);
 
             });
         });
