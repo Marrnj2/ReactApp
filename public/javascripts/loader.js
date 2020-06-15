@@ -21,18 +21,19 @@ var Loader = function (_React$Component) {
     _createClass(Loader, [{
         key: "handleClick",
         value: function handleClick() {
-
             // fetch("http://157.245.170.229/Countries")
             // .then(response => JSON.stringify(response))
             // .then(data => localStorage.setItem('Country', data));
             $.get("http://157.245.170.229/Countries/", function (response) {
 
                 var obj = JSON.parse(response);
-                console.log(obj);
+                var names = [];
+                console.log(response.name);
                 obj.forEach(function (element) {
-                    var test1 = JSON.stringify(element);
-                    localStorage.setItem(element.name, test1);
+                    names.push(element.name);
+                    // let data = JSON.stringify(element)
                 });
+                localStorage.setItem('countries', names);
             });
         }
     }, {
@@ -50,6 +51,8 @@ var Loader = function (_React$Component) {
 
     return Loader;
 }(React.Component);
+// let domContainer = document.getElementById('loader_container');
+// ReactDOM.render(<Loader />, domContainer);
 
-var domContainer = document.getElementById('loader_container');
-ReactDOM.render(React.createElement(Loader, null), domContainer);
+
+export default Loader;

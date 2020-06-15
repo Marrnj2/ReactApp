@@ -5,20 +5,21 @@ class Loader extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
     handleClick() {
-
         // fetch("http://157.245.170.229/Countries")
         // .then(response => JSON.stringify(response))
         // .then(data => localStorage.setItem('Country', data));
         $.get("http://157.245.170.229/Countries/", (response) => {
 
             let obj = JSON.parse(response);
-            console.log(obj);
+            let names = [];
+            console.log(response.name);
             obj.forEach(element => {
-                let test1 = JSON.stringify(element)
-                localStorage.setItem(element.name, test1);
-
-            });
+                names.push(element.name);
+                // let data = JSON.stringify(element)
+             });
+             localStorage.setItem('countries', names);
         });
+
     }
     render() {
         return (
@@ -28,5 +29,6 @@ class Loader extends React.Component {
         );
     }
 }
-let domContainer = document.getElementById('loader_container');
-ReactDOM.render(<Loader />, domContainer);
+// let domContainer = document.getElementById('loader_container');
+// ReactDOM.render(<Loader />, domContainer);
+export default Loader;

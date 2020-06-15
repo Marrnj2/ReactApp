@@ -63,3 +63,4 @@ var Select = function (_React$Component2) {
 
 var domContainer = document.getElementById('like_button_container');
 ReactDOM.render(React.createElement(Form, { stuff: "Me" }), domContainer);
+export default Form;

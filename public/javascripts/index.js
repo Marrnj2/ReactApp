@@ -1,9 +1,21 @@
-import React from 'react';
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import CountrySelect from 'public/javascripts/update.js'
+
+// ReactDOM.render(
+// <div><div>><CountrySelect/></div>,
+// </div>,
+// document.getElementById('app')
+// );
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-var title = 'My Minimal React Webpack Babel Setup';
+import Update from "./update.js";
+import Loader from "./loader.js";
+import CountryNames from './countryNames.js';
 
 ReactDOM.render(React.createElement(
   'div',
   null,
-  title
+  React.createElement(Loader, null),
+  React.createElement(Update, null)
 ), document.getElementById('app'));

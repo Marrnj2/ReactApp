@@ -81,7 +81,7 @@ if (!self.define) {
     });
   };
 }
-define("./sw.js",['./workbox-decc7022'], function (workbox) { 'use strict';
+define("./sw.js",['./workbox-90fb64e5'], function (workbox) { 'use strict';
 
   /**
   * Welcome to your Workbox-powered service worker!
@@ -109,7 +109,7 @@ define("./sw.js",['./workbox-decc7022'], function (workbox) { 'use strict';
 
   workbox.precacheAndRoute([{
     "url": "main.js",
-    "revision": "31cb61b2a37387ca85a2c517a401be2a"
+    "revision": "fb5e76a08a400a8e8411ea231ed445cc"
   }], {});
 
 });

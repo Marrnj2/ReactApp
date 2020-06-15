@@ -25,4 +25,4 @@ class Select extends React.Component{
 }
 let domContainer = document.getElementById('like_button_container');
 ReactDOM.render(<Form stuff="Me" />, domContainer);
-
+export default Form;
