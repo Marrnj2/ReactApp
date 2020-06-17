@@ -9,13 +9,12 @@
 // );
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import Update from "./update.js";
-import Loader from "./loader.js";
-import CountryNames from './countryNames.js';
+import Form from "./form.js";
+import Loader from './Loader.js';
 
 ReactDOM.render(React.createElement(
   'div',
   null,
   React.createElement(Loader, null),
-  React.createElement(Update, null)
+  React.createElement(Form, null)
 ), document.getElementById('app'));

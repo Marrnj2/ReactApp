@@ -218,6 +218,18 @@ eval("\r\n\r\nif (false) {} else {\r\n  module.exports = __webpack_require__(/*!
 
 /***/ }),
 
+/***/ "./src/Loader.js":
+/*!***********************!*\
+  !*** ./src/Loader.js ***!
+  \***********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\nclass Loader extends React.Component {\n  constructor(props) {\n    super(props);\n    this.handleClick = this.handleClick.bind(this);\n  }\n\n  handleClick() {\n    // fetch(\"http://157.245.170.229/Countries\")\n    // .then(response => JSON.stringify(response))\n    // .then(data => localStorage.setItem('Country', data));\n    $.get(\"http://157.245.170.229/Countries/\", response => {\n      let obj = JSON.parse(response);\n      obj.forEach(element => {\n        localStorage.setItem(element.name, JSON.stringify(element.data));\n      });\n    });\n  }\n\n  render() {\n    return /*#__PURE__*/React.createElement(\"button\", {\n      onClick: this.handleClick\n    }, \"Store Data\");\n  }\n\n} // let domContainer = document.getElementById('loader_container');\n// ReactDOM.render(<Loader />, domContainer);\n\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Loader);\n\n//# sourceURL=webpack:///./src/Loader.js?");
+
+/***/ }),
+
 /***/ "./src/countryNames.js":
 /*!*****************************!*\
   !*** ./src/countryNames.js ***!
@@ -226,7 +238,19 @@ eval("\r\n\r\nif (false) {} else {\r\n  module.exports = __webpack_require__(/*!
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\nfunction CountryNames() {\n  let storedNames = localStorage.getItem('countries');\n  let convertedNames = storedNames.split(','); // for(let i in localStorage)\n  // {\n  //     console.log(i);\n  // }\n\n  return convertedNames;\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (CountryNames);\n\n//# sourceURL=webpack:///./src/countryNames.js?");
+eval("__webpack_require__.r(__webpack_exports__);\nfunction countryNames() {\n  let unsortedKeys = Object.keys(localStorage);\n  let sortedKeys = unsortedKeys.sort();\n  return sortedKeys;\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (countryNames);\n\n//# sourceURL=webpack:///./src/countryNames.js?");
+
+/***/ }),
+
+/***/ "./src/form.js":
+/*!*********************!*\
+  !*** ./src/form.js ***!
+  \*********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _countryNames_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./countryNames.js */ \"./src/countryNames.js\");\n\n\n\n\nfunction Form(props) {\n  let countryList = Object(_countryNames_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"])();\n  let [countries, setCountries] = Object(react__WEBPACK_IMPORTED_MODULE_0__[\"useState\"])(countryList);\n  let [selectedCountry, setSelectedCountry] = Object(react__WEBPACK_IMPORTED_MODULE_0__[\"useState\"])(countryList[0]);\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"form\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"label\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"select\", {\n    value: selectedCountry,\n    onChange: e => setSelectedCountry(e.target.value)\n  }, countries.map((country, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"option\", {\n    key: index,\n    value: country\n  }, country)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(RemoveButton, {\n    country: selectedCountry\n  }));\n}\n\nfunction RemoveButton({\n  country\n}) {\n  const deleteCountry = Object(react__WEBPACK_IMPORTED_MODULE_0__[\"useCallback\"])(c => {\n    $.ajax({\n      url: \"http://157.245.170.229/Countries/\" + country,\n      type: 'DELETE',\n      success: result => {\n        console.log(\"Removed\");\n      },\n      statusCode: {\n        400: () => {\n          console.log(\"Country not found\");\n        }\n      }\n    });\n    let localStorage = window.localStorage;\n    localStorage.removeItem(country);\n    setCountries.useState(Object(_countryNames_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"])());\n  }, [country]);\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"button\", {\n    onClick: () => {\n      deleteCountry(country);\n    }\n  }, \"Delete \", country);\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Form);\n\n//# sourceURL=webpack:///./src/form.js?");
 
 /***/ }),
 
@@ -238,31 +262,7 @@ eval("__webpack_require__.r(__webpack_exports__);\nfunction CountryNames() {\n  
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _update_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./update.js */ \"./src/update.js\");\n/* harmony import */ var _loader_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./loader.js */ \"./src/loader.js\");\n/* harmony import */ var _countryNames_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./countryNames.js */ \"./src/countryNames.js\");\n// import React from 'react';\n// import ReactDOM from 'react-dom';\n// import CountrySelect from 'public/javascripts/update.js'\n// ReactDOM.render(\n// <div><div>><CountrySelect/></div>,\n// </div>,\n// document.getElementById('app')\n// );\n\n\n\n\n\nreact_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_loader_js__WEBPACK_IMPORTED_MODULE_3__[\"default\"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_update_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"], null)), document.getElementById('app'));\n\n//# sourceURL=webpack:///./src/index.js?");
-
-/***/ }),
-
-/***/ "./src/loader.js":
-/*!***********************!*\
-  !*** ./src/loader.js ***!
-  \***********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\nclass Loader extends React.Component {\n  constructor(props) {\n    super(props);\n    this.handleClick = this.handleClick.bind(this);\n  }\n\n  handleClick() {\n    // fetch(\"http://157.245.170.229/Countries\")\n    // .then(response => JSON.stringify(response))\n    // .then(data => localStorage.setItem('Country', data));\n    $.get(\"http://157.245.170.229/Countries/\", response => {\n      let obj = JSON.parse(response);\n      let names = [];\n      console.log(response.name);\n      obj.forEach(element => {\n        names.push(element.name); // let data = JSON.stringify(element)\n      });\n      localStorage.setItem('countries', names);\n    });\n  }\n\n  render() {\n    return /*#__PURE__*/React.createElement(\"button\", {\n      onClick: this.handleClick\n    }, \"Store Data\");\n  }\n\n} // let domContainer = document.getElementById('loader_container');\n// ReactDOM.render(<Loader />, domContainer);\n\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Loader);\n\n//# sourceURL=webpack:///./src/loader.js?");
-
-/***/ }),
-
-/***/ "./src/update.js":
-/*!***********************!*\
-  !*** ./src/update.js ***!
-  \***********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _countryNames_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./countryNames.js */ \"./src/countryNames.js\");\n\n\n\nfunction Update(props) {\n  let [myKeys, setKeys] = Object(react__WEBPACK_IMPORTED_MODULE_0__[\"useState\"])(Object(_countryNames_js__WEBPACK_IMPORTED_MODULE_1__[\"default\"])());\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"form\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"label\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"select\", null, myKeys.map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CountrySelect, {\n    name: item\n  })))));\n}\n\nfunction CountrySelect(props) {\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"option\", {\n    value: props.name\n  }, props.name);\n} //domElement = document.getElementById(\"update_container\");\n//ReactDOM.render(<Update/>,domElement);\n\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Update);\n\n//# sourceURL=webpack:///./src/update.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _form_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./form.js */ \"./src/form.js\");\n/* harmony import */ var _Loader_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Loader.js */ \"./src/Loader.js\");\n// import React from 'react';\n// import ReactDOM from 'react-dom';\n// import CountrySelect from 'public/javascripts/update.js'\n// ReactDOM.render(\n// <div><div>><CountrySelect/></div>,\n// </div>,\n// document.getElementById('app')\n// );\n\n\n\n\nreact_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Loader_js__WEBPACK_IMPORTED_MODULE_3__[\"default\"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"], null)), document.getElementById('app'));\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ })
 

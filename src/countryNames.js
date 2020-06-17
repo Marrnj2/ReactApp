@@ -1,13 +1,8 @@
 
-function CountryNames(){
-    let storedNames = localStorage.getItem('countries');
-    let convertedNames = storedNames.split(',');
-    // for(let i in localStorage)
-    // {
-    //     console.log(i);
-    // }
-    
-    return convertedNames;
+function countryNames(){
+    let unsortedKeys = Object.keys(localStorage);
+    let sortedKeys = unsortedKeys.sort();
+    return sortedKeys;
 }
 
-export default CountryNames;
+export default countryNames;

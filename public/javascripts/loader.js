@@ -27,13 +27,9 @@ var Loader = function (_React$Component) {
             $.get("http://157.245.170.229/Countries/", function (response) {
 
                 var obj = JSON.parse(response);
-                var names = [];
-                console.log(response.name);
                 obj.forEach(function (element) {
-                    names.push(element.name);
-                    // let data = JSON.stringify(element)
+                    localStorage.setItem(element.name, JSON.stringify(element.data));
                 });
-                localStorage.setItem('countries', names);
             });
         }
     }, {

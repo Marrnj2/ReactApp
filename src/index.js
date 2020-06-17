@@ -9,11 +9,10 @@
 // );
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import Update from "./update.js"
-import Loader from "./loader.js"
-import CountryNames from './countryNames.js'
+import Form from "./form.js"
+import Loader from './Loader.js'
 
 ReactDOM.render(
-<div><Loader/><Update/></div>,
+<div><Loader/><Form/></div>,
 document.getElementById('app')
 );
