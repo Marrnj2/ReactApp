@@ -15,6 +15,5 @@ import Loader from './Loader.js';
 ReactDOM.render(React.createElement(
   'div',
   null,
-  React.createElement(Loader, null),
   React.createElement(Form, null)
 ), document.getElementById('app'));

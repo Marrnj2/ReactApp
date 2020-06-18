@@ -13,6 +13,6 @@ import Form from "./form.js"
 import Loader from './Loader.js'
 
 ReactDOM.render(
-<div><Loader/><Form/></div>,
+<div><Form/></div>,
 document.getElementById('app')
 );
