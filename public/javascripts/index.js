@@ -10,7 +10,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Form from "./form.js";
-import Loader from './Loader.js';
 
 ReactDOM.render(React.createElement(
   'div',

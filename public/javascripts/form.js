@@ -73,14 +73,14 @@ function Form(props) {
         'div',
         null,
         React.createElement(
-            'form',
-            null,
+            'div',
+            { className: 'form-group' },
             React.createElement(
-                'label',
+                'form',
                 null,
                 React.createElement(
                     'select',
-                    { value: selectedCountry, onChange: function onChange(e) {
+                    { className: 'form-control', value: selectedCountry, onChange: function onChange(e) {
                             return setSelectedCountry(e.target.value);
                         } },
                     React.createElement(
@@ -95,31 +95,27 @@ function Form(props) {
                             country
                         );
                     })
-                )
-            )
-        ),
-        React.createElement(
-            'form',
-            null,
-            React.createElement(
-                'select',
-                { onChange: function onChange(e) {
-                        return setSelectedYear(e.target.value);
-                    } },
-                React.createElement(
-                    'option',
-                    null,
-                    'Select Year'
                 ),
-                year.map(function (year, index) {
-                    return React.createElement(
+                React.createElement(
+                    'select',
+                    { className: 'form-control', onChange: function onChange(e) {
+                            return setSelectedYear(e.target.value);
+                        } },
+                    React.createElement(
                         'option',
-                        { key: index, value: year },
-                        year
-                    );
-                })
-            ),
-            React.createElement(DataSet, { searchCountry: selectedCountry, year: selectedYear })
+                        null,
+                        'Select Year'
+                    ),
+                    year.map(function (year, index) {
+                        return React.createElement(
+                            'option',
+                            { key: index, value: year },
+                            year
+                        );
+                    })
+                ),
+                React.createElement(DataSet, { searchCountry: selectedCountry, year: selectedYear })
+            )
         ),
         React.createElement(RemoveCountry, { country: selectedCountry }),
         React.createElement(AddCountry, null)
@@ -158,7 +154,7 @@ function RemoveCountry(_ref) {
         { onSubmit: function onSubmit(e) {
                 return deleteCountry(e);
             } },
-        React.createElement('input', { type: 'submit', value: 'Delete' })
+        React.createElement('input', { className: 'btn btn-danger', type: 'submit', value: 'Delete' })
     );
 }
 
@@ -189,13 +185,18 @@ function AddCountry() {
 
     return React.createElement(
         'form',
-        { onSubmit: function onSubmit(e) {
+        { className: 'form-group', onSubmit: function onSubmit(e) {
                 return addCountry(e);
             } },
-        React.createElement('input', { type: 'text', value: newCountry, onChange: function onChange(e) {
-                return setNewCountry(e.target.value);
-            } }),
-        React.createElement('input', { type: 'submit', value: 'Create New Country\r ' })
+        React.createElement(
+            'label',
+            null,
+            'New Country Name',
+            React.createElement('input', { className: 'form-control', type: 'text', value: newCountry, onChange: function onChange(e) {
+                    return setNewCountry(e.target.value);
+                } })
+        ),
+        React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'Create New Country' })
     );
 }
 

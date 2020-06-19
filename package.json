@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "babel": "npx babel src --out-dir public/javascripts --presets react-app/prod",
-    "deploy": "./node_modules/.bin/webpack &  npm run babel & npm start"
+    "deploy": "./node_modules/.bin/webpack &  npm run babel & npm start",
+    "build" : "./node_modules/.bin/webpack &  npm run babel & npm start"
   },
   "dependencies": {
     "@webpack-cli/init": "^0.2.2",
