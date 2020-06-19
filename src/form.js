@@ -1,12 +1,12 @@
 import React, { useState,useEffect,useCallback} from 'react';
 import ReactDOM from 'react-dom';
 
-function Form(props){
+function Form(props) {
     let [countries, setCountries] = useState(["...."]);
     let [selectedCountry, setSelectedCountry] = useState("...");
-    let [year,setYear] = useState(['']);
-    let [selectedYear,setSelectedYear] = useState(1800);
-    let [newCountry, setNewCountry] = useState("");
+    let [year,setYear] = useState([1800]);
+    let [selectedYear,setSelectedYear] = useState("Select Year");
+    let [dataPresent, setDataPresent] = useState("");
     function yearList(){
         const start = 1800;
         const end = 2100;
@@ -15,48 +15,52 @@ function Form(props){
         {
             years.push(i);
         }
-        setYear(years);
+        return years;
     }
     function countryNames(){
-        
-        
-        // else
-        // {
-            let localStorage = window.localStorage;
             let storedNames = localStorage.getItem('countries');
             let countryNames = storedNames.split(',');
             return countryNames;
-        // }
-        
     }
     const loadCountries = useCallback (() =>{
-         if(!localStorage.getItem('countries'))
+       
+            return $.get("http://157.245.170.229/Countries/", (response) => {
 
-        $.get("http://157.245.170.229/Countries/", (response) => {
-
-            let obj = JSON.parse(response);
-            let names = [];
-            obj.forEach(element => {
-                names.push(element.name);
-                // let data = JSON.stringify(element)
-                localStorage.setItem('countries', names);
-             });
-        });
+                let obj = JSON.parse(response);
+                let names = [];
+                 obj.forEach(element => {
+                    names.push(element.name);
+                    // let data = JSON.stringify(element)
+                    localStorage.setItem('countries', names);
     
+                 });
+                 console.log("here");
+            });
+        
+      
+       
     })
-    useEffect(()=>{
-        loadCountries();
-        setCountries(countryNames());
-        yearList();
-    },[])
 
-
+    useEffect(() =>{
+        if(!localStorage.getItem('countries'))
+        {
+            loadCountries().then(e =>{
+                setCountries(countryNames())
+                setYear(yearList());
+            })
+        }
+        else{
+            setCountries(countryNames())
+            setYear(yearList());
+        }
+       
+    },[]);
     return(
         <div>
             <form>
                 <label>
                 <select value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)}> 
-                    <option>...</option>
+                    <option>Select Country</option>
                     {countries.map((country, index) => (
                         <option key={index} value={country}>
                             {country}
@@ -65,11 +69,11 @@ function Form(props){
                     </select>
 
                 </label>
-                <RemoveButton country={selectedCountry}></RemoveButton>
             </form>
             <form>
-                {/* <input type="number" value={year} onChange={e => setYear(e.target.value)}></input> */}
                 <select onChange={(e) => setSelectedYear(e.target.value)}>
+                <option>Select Year</option>
+
                 {year.map((year, index) => (
                         <option key={index} value={year}>
                             {year}
@@ -79,20 +83,21 @@ function Form(props){
                 <DataSet searchCountry={selectedCountry} year={selectedYear}></DataSet>
 
             </form>
-           
+            <RemoveCountry country={selectedCountry}></RemoveCountry>
+
            <AddCountry></AddCountry>
 
        </div>
     );
 }
 
-function RemoveButton({country}){
-    const deleteCountry = useCallback ((c) =>{
+function RemoveCountry({country}){
+    const deleteCountry = useCallback ((e) =>{
         $.ajax({
             url:"http://157.245.170.229/Countries/"+ country,
             type: 'DELETE',
             success: (result) =>{
-                console.log("Removed");
+                console.log("Removed " + country);
             },
             statusCode: {
                 400: () =>{
@@ -100,13 +105,23 @@ function RemoveButton({country}){
                 }
             }
         });
-        let localStorage = window.localStorage;
-        localStorage.removeItem(country);
-        setCountries.useState(countryNames());
-    },[country])
+        let storedNames = localStorage.getItem('countries');
+        let countryNames = storedNames.split(',');
+        for( var i = 0; i < countryNames.length; i++)
+        {
+             if ( countryNames[i] == country)
+              { countryNames.splice(i, 1); i--;
+         }
+        }
+        localStorage.setItem('countries', countryNames);
+        e.preventDefault();
+
+    })
 
     return(
-        <button onClick={() => {deleteCountry(country)}}>Delete {country}</button>
+        <form  onSubmit={(e) => deleteCountry(e)}>
+        <input type="submit" value="Delete"/>
+        </form>
     );
 }
 
@@ -136,7 +151,8 @@ function AddCountry(){
     return(
         <form onSubmit={(e) => addCountry(e)}>
             <input type="text" value={newCountry} onChange={(e) => setNewCountry(e.target.value)} />
-            <input type="submit" value="Submit"/>
+            <input type="submit" value="Create New Country
+            "/>
         </form>
         );
 }
@@ -153,7 +169,6 @@ function DataSet({searchCountry, year}){
    const getDataByYear =useCallback( () => {
         let dataCollection = dataSets.map((dataSet)=>{
             let x =  data[dataSet][year]
-            console.log(x);
 
             return x;
         })

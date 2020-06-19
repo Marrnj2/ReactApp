@@ -14,20 +14,20 @@ function Form(props) {
         selectedCountry = _useState4[0],
         setSelectedCountry = _useState4[1];
 
-    var _useState5 = useState(['']),
+    var _useState5 = useState([1800]),
         _useState6 = _slicedToArray(_useState5, 2),
         year = _useState6[0],
         setYear = _useState6[1];
 
-    var _useState7 = useState(1800),
+    var _useState7 = useState("Select Year"),
         _useState8 = _slicedToArray(_useState7, 2),
         selectedYear = _useState8[0],
         setSelectedYear = _useState8[1];
 
     var _useState9 = useState(""),
         _useState10 = _slicedToArray(_useState9, 2),
-        newCountry = _useState10[0],
-        setNewCountry = _useState10[1];
+        dataPresent = _useState10[0],
+        setDataPresent = _useState10[1];
 
     function yearList() {
         var start = 1800;
@@ -36,20 +36,16 @@ function Form(props) {
         for (var i = start; i <= end; i++) {
             years.push(i);
         }
-        setYear(years);
+        return years;
     }
     function countryNames() {
-
-        // else
-        // {
-        var localStorage = window.localStorage;
         var storedNames = localStorage.getItem('countries');
         var countryNames = storedNames.split(',');
         return countryNames;
-        // }
     }
     var loadCountries = useCallback(function () {
-        if (!localStorage.getItem('countries')) $.get("http://157.245.170.229/Countries/", function (response) {
+
+        return $.get("http://157.245.170.229/Countries/", function (response) {
 
             var obj = JSON.parse(response);
             var names = [];
@@ -58,14 +54,21 @@ function Form(props) {
                 // let data = JSON.stringify(element)
                 localStorage.setItem('countries', names);
             });
+            console.log("here");
         });
     });
-    useEffect(function () {
-        loadCountries();
-        setCountries(countryNames());
-        yearList();
-    }, []);
 
+    useEffect(function () {
+        if (!localStorage.getItem('countries')) {
+            loadCountries().then(function (e) {
+                setCountries(countryNames());
+                setYear(yearList());
+            });
+        } else {
+            setCountries(countryNames());
+            setYear(yearList());
+        }
+    }, []);
     return React.createElement(
         'div',
         null,
@@ -83,7 +86,7 @@ function Form(props) {
                     React.createElement(
                         'option',
                         null,
-                        '...'
+                        'Select Country'
                     ),
                     countries.map(function (country, index) {
                         return React.createElement(
@@ -93,8 +96,7 @@ function Form(props) {
                         );
                     })
                 )
-            ),
-            React.createElement(RemoveButton, { country: selectedCountry })
+            )
         ),
         React.createElement(
             'form',
@@ -104,6 +106,11 @@ function Form(props) {
                 { onChange: function onChange(e) {
                         return setSelectedYear(e.target.value);
                     } },
+                React.createElement(
+                    'option',
+                    null,
+                    'Select Year'
+                ),
                 year.map(function (year, index) {
                     return React.createElement(
                         'option',
@@ -114,19 +121,20 @@ function Form(props) {
             ),
             React.createElement(DataSet, { searchCountry: selectedCountry, year: selectedYear })
         ),
+        React.createElement(RemoveCountry, { country: selectedCountry }),
         React.createElement(AddCountry, null)
     );
 }
 
-function RemoveButton(_ref) {
+function RemoveCountry(_ref) {
     var country = _ref.country;
 
-    var deleteCountry = useCallback(function (c) {
+    var deleteCountry = useCallback(function (e) {
         $.ajax({
             url: "http://157.245.170.229/Countries/" + country,
             type: 'DELETE',
             success: function success(result) {
-                console.log("Removed");
+                console.log("Removed " + country);
             },
             statusCode: {
                 400: function _() {
@@ -134,18 +142,23 @@ function RemoveButton(_ref) {
                 }
             }
         });
-        var localStorage = window.localStorage;
-        localStorage.removeItem(country);
-        setCountries.useState(countryNames());
-    }, [country]);
+        var storedNames = localStorage.getItem('countries');
+        var countryNames = storedNames.split(',');
+        for (var i = 0; i < countryNames.length; i++) {
+            if (countryNames[i] == country) {
+                countryNames.splice(i, 1);i--;
+            }
+        }
+        localStorage.setItem('countries', countryNames);
+        e.preventDefault();
+    });
 
     return React.createElement(
-        'button',
-        { onClick: function onClick() {
-                deleteCountry(country);
+        'form',
+        { onSubmit: function onSubmit(e) {
+                return deleteCountry(e);
             } },
-        'Delete ',
-        country
+        React.createElement('input', { type: 'submit', value: 'Delete' })
     );
 }
 
@@ -182,7 +195,7 @@ function AddCountry() {
         React.createElement('input', { type: 'text', value: newCountry, onChange: function onChange(e) {
                 return setNewCountry(e.target.value);
             } }),
-        React.createElement('input', { type: 'submit', value: 'Submit' })
+        React.createElement('input', { type: 'submit', value: 'Create New Country\r ' })
     );
 }
 
@@ -205,7 +218,6 @@ function DataSet(_ref2) {
     var getDataByYear = useCallback(function () {
         var dataCollection = dataSets.map(function (dataSet) {
             var x = data[dataSet][year];
-            console.log(x);
 
             return x;
         });
