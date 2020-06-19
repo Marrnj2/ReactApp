@@ -3,8 +3,12 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  <!-- Load our React component. -->
-  #app
-   
-    script(src="/javascripts/main.js")
-    script(src="/javascripts/index.js")
+  div.container
+    div.row
+      div.col-sm-4
+      div.col-sm-4
+        #app
+      div.col-md-8
+      
+  script(src="/javascripts/main.js")
+  script(src="/javascripts/index.js")

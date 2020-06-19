@@ -1,12 +1,10 @@
 import React, { useState,useEffect,useCallback} from 'react';
-import ReactDOM from 'react-dom';
 
 function Form(props) {
     let [countries, setCountries] = useState(["...."]);
     let [selectedCountry, setSelectedCountry] = useState("...");
     let [year,setYear] = useState([1800]);
     let [selectedYear,setSelectedYear] = useState("Select Year");
-    let [dataPresent, setDataPresent] = useState("");
     function yearList(){
         const start = 1800;
         const end = 2100;
@@ -55,38 +53,32 @@ function Form(props) {
         }
        
     },[]);
-    return(
+    return(     
         <div>
-            <form>
-                <label>
-                <select value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)}> 
-                    <option>Select Country</option>
-                    {countries.map((country, index) => (
-                        <option key={index} value={country}>
-                            {country}
-                        </option>
-                    ))}
-                    </select>
+            <div className="form-group">
+                <form >
+                    <select className="form-control" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)}> 
+                        <option>Select Country</option>
+                        {countries.map((country, index) => (
+                            <option key={index} value={country}>
+                                {country}
+                            </option>
+                        ))}
+                        </select>
 
-                </label>
-            </form>
-            <form>
-                <select onChange={(e) => setSelectedYear(e.target.value)}>
-                <option>Select Year</option>
-
-                {year.map((year, index) => (
-                        <option key={index} value={year}>
+                    <select className="form-control" onChange={(e) => setSelectedYear(e.target.value)}>
+                    <option>Select Year</option>
+                    {year.map((year, index) => (
+                            <option key={index} value={year}>
                             {year}
-                        </option>
-                    ))}
-                </select>
-                <DataSet searchCountry={selectedCountry} year={selectedYear}></DataSet>
-
-            </form>
+                            </option>
+                        ))}
+                    </select>
+                    <DataSet searchCountry={selectedCountry} year={selectedYear}></DataSet>
+                </form>
+            </div>
             <RemoveCountry country={selectedCountry}></RemoveCountry>
-
-           <AddCountry></AddCountry>
-
+            <AddCountry></AddCountry>
        </div>
     );
 }
@@ -120,7 +112,7 @@ function RemoveCountry({country}){
 
     return(
         <form  onSubmit={(e) => deleteCountry(e)}>
-        <input type="submit" value="Delete"/>
+        <input className="btn btn-danger" type="submit" value="Delete"/>
         </form>
     );
 }
@@ -149,14 +141,19 @@ function AddCountry(){
     // }
 
     return(
-        <form onSubmit={(e) => addCountry(e)}>
-            <input type="text" value={newCountry} onChange={(e) => setNewCountry(e.target.value)} />
-            <input type="submit" value="Create New Country
-            "/>
+        <form className="form-group" onSubmit={(e) => addCountry(e)}>
+
+            <label >
+                New Country Name  
+
+                <input className="btn btn-success" type="submit" value="Create New Country"/>
+                <input className="form-control" type="text" value={newCountry} onChange={(e) => setNewCountry(e.target.value)}/>
+
+            </label>
+            
         </form>
         );
 }
-
 
 
 
@@ -165,7 +162,6 @@ function DataSet({searchCountry, year}){
     "population_total","life_expectancy_years"];
     let [data,setData] = useState([""]);
     let [displayData, setDisplayData] = useState(["..."]);
-
    const getDataByYear =useCallback( () => {
         let dataCollection = dataSets.map((dataSet)=>{
             let x =  data[dataSet][year]
@@ -174,7 +170,6 @@ function DataSet({searchCountry, year}){
         })
         return dataCollection;
     },[data])
-
     const loadData = useCallback ((sC) =>{
         return $.get("http://157.245.170.229/Countries/" + sC, (response) => {
 
