@@ -130,36 +130,44 @@ function RemoveCountry({country}){
 }
 
 
-//Creates the form for adding and controlls the 
+//Creates the form for adding a country and calls the API to add it to the database
 function AddCountry(){
     let [newCountry, setNewCountry] = useState("");
     // Addes a new country to lcoal storage and calls the api to add it to the database
     const addCountry = useCallback ((e) =>{
-        // split the countrys from local storage then sort them in order and add them back to local storage
-        // Also call the api to add it to the database
-        let storedNames = localStorage.getItem('countries');
-        let countryNames = storedNames.split(',');
-        countryNames.push(newCountry);
-        let sorted = countryNames.sort();
-        localStorage.setItem('countries', sorted);
-        $.post("http://157.245.170.229/Countries/"+ newCountry,() =>{
-            console.log("Added " + newCountry + " to DB");
-        }).fail(function(){
-            console.log("Country already in database");
-        });
-
+      
+        // Checks to see if the input is invlaid
+        if(newCountry === " " || newCountry === "" || newCountry === "INVLAID COUNTRY NAME")
+        {
+            setNewCountry("INVLAID COUNTRY NAME");
+        }else{
+              // split the countrys from local storage then sort them in order and add them back to local storage
+            // Also call the api to add it to the database
+            let storedNames = localStorage.getItem('countries');
+            let countryNames = storedNames.split(',');
+            countryNames.push(newCountry);
+            let sorted = countryNames.sort();
+            localStorage.setItem('countries', sorted);
+            $.post("http://157.245.170.229/Countries/"+ newCountry,() =>{
+                console.log("Added " + newCountry + " to DB");
+            }).fail(function(){
+                console.log("Country already in database");
+            });
+    
+        }
+      
         e.preventDefault();
     });
     return(
         <form className="form-group" onSubmit={(e) => addCountry(e)}>
 
-            <label >
+                <label>
                 New Country Name  
-
-                <input className="btn btn-success" type="submit" value="Create New Country"/>
+                </label>
                 <input className="form-control" type="text" value={newCountry} onChange={(e) => setNewCountry(e.target.value)}/>
+                <input className="btn btn-success" type="submit" value="Create New Country"/>
 
-            </label>
+           
             
         </form>
         );
@@ -200,7 +208,7 @@ function DataSet({searchCountry, year}){
 
     return(
 
-    <div>
+    <div className="pt-5">
     <p>Income Per Person: {displayData[0]}</p>
     <p>Population Total: {displayData[1]}</p>
     <p>Life Expectancy Years: {displayData[2]}</p>
